@@ -1,0 +1,87 @@
+{% extends 'base/base-dashboard.html' %}
+{% load static %}
+{% block title %}
+DDTC | Notifikasi Admin
+{% endblock title %}
+{% block content %}
+{% if notifikasi %}
+
+<div class="relative overflow-x-auto">
+    <h2 class="text-2xl font-bold text-darkblue-700 mb-4">Update request from SuperUser</h2>
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">Employee's Name</th>
+                <th scope="col" class="px-6 py-3">Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for notifikasi_item in notifikasi %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <input type="hidden" name="nama" value="{{ notifikasi_item.informasi_karyawan.nama }}">
+                    {{ notifikasi_item.informasi_karyawan.nama }}
+                </th>
+                <td class="px-6 py-4">
+                    {{ notifikasi_item.pesan }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="text-2xl font-bold text-darkblue-700 mt-4">Pending Member</h2>
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-4">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">Employee's Name</th>
+                <th scope="col" class="px-6 py-3">Position</th>
+                <th scope="col" class="px-6 py-3">Tax Consultant</th>
+                <th scope="col" class="px-6 py-3">Tax Attorney</th>
+                <th scope="col" class="px-6 py-3">Expired License - Attorney</th>
+                <th scope="col" class="px-6 py-3">Expired License - Consultant</th>
+                <th scope="col" class="px-6 py-3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for notifikasi_item in notifikasi %}
+            <form method="POST">
+                {% csrf_token %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <input type="hidden" name="nama" value="{{ notifikasi_item.informasi_karyawan.nama }}">
+                        {{ notifikasi_item.informasi_karyawan.nama }}
+                    </th>
+                    <td class="px-6 py-4">
+                        {{ notifikasi_item.informasi_karyawan.jabatan }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ notifikasi_item.informasi_karyawan.status_sertifikasi }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ notifikasi_item.informasi_karyawan.status_kuasa_hukum }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ notifikasi_item.informasi_karyawan.izin_berlaku_attorney }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ notifikasi_item.informasi_karyawan.izin_berlaku_konsultan }}
+                    </td>
+                    <td class="px-6 py-4">
+                        <button type="submit"
+                            class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Edit Member
+                        </button>
+                    </td>
+                </tr>
+            </form>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="text-2xl font-bold text-darkblue-700 mt-4">Pending Project</h2>
+</div>
+{% else %}
+<p>{{ detail }}</p>
+{% endif %}
+{% endblock content %}

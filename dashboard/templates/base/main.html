@@ -1,0 +1,17 @@
+{% extends 'base/base-dashboard.html' %}
+{% load static %}
+{% block title %} DDTC | Halaman Utama {% endblock title %}
+{% block content %}
+<p>Ini halaman redirect login</p>
+{% if messages %}
+{% for message in messages %}
+<script>
+  swal({
+    icon: "success",
+    title: "Berhasil",
+    text: "{{ message }}",
+  });
+</script>
+{% endfor %}
+{% endif %}
+{% endblock content %}

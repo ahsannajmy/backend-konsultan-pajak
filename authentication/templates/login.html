@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}DDTC | Login{% endblock %}
+{% block content %}
+<div class="flex h-screen">
+    <div class="w-full bg-darkblue flex flex-col justify-center items-center">
+        <img src="{% static 'assets/DDTC-Logo.png' %}" alt="Example Image">
+        <div class="w-96">
+            <form class="mt-4" method="post">
+                {% csrf_token %}
+                <div class="flex flex-col px-4">
+                    <h1 class="text-left font-bold text-xl text-white text-center">Login with your email and password
+                    </h1>
+                    <div class="block mt-4 font-bold text-white font-sans">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="mt-2">
+                        <input class="w-full px-3 py-2 border rounded-lg" type="email" placeholder="Enter your email"
+                            name="email" required />
+                    </div>
+                    <div class="mt-4 text-white font-sans">
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="mt-2">
+                        <input class="w-full px-3 py-2 border rounded-lg" type="password"
+                            placeholder="Enter your password" name="password" required />
+                    </div>
+                    <div class="mt-6">
+                        <button
+                            class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                            type="submit">
+                            Login
+                        </button>
+                        <p class="block mt-4 font-bold text-white font-sans">Register <a
+                                href="{% url 'authentication:register' %}"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">here</a></p>
+                    </div>
+                </div>
+
+
+
+            </form>
+        </div>
+
+        {% if messages %}
+        {% for message in messages %}
+        <script>
+            swal({
+                icon: "error",
+                title: "Gagal",
+                text: "{{ message }}",
+            });
+        </script>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
