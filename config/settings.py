@@ -98,23 +98,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # db_password = env.str('DB_PASSWORD')
 # db_name = env.str('DB_NAME')
 
-DEPLOYMENT = os.getenv("PRODUCTION_DATABASE_URL") is not None
-db_name = os.getenv("PGDATABASE")
-db_username = os.getenv("PGUSER")
-db_password = os.getenv("PGPASSWORD")
-db_host = os.getenv("PGHOST")
-db_port = os.getenv("PGPORT")
+DEPLOYMENT = os.getenv("DATABASE_URL") is not None
+# db_name = os.getenv("PGDATABASE")
+# db_username = os.getenv("PGUSER")
+# db_password = os.getenv("PGPASSWORD")
+# db_host = os.getenv("PGHOST")
+# db_port = os.getenv("PGPORT")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DEPLOYMENT:
     DATABASES = {
-        "default": {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': db_name,
-            'USER': db_username,
-            'PASSWORD': db_password,
-            'HOST': db_host,
-            'PORT': db_port,
-        }
+        "default" : dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
     }
 else:
     DATABASES = {
