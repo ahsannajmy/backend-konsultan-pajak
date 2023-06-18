@@ -1,8 +1,216 @@
 {% extends 'base/base-dashboard.html' %}
 {% load static %}
-{% block title}
+{% block title %}
 DDTC | Tim
 {% endblock title %}
 {% block content %}
+<div class="w-full bg-white border border-gray-200 rounded-lg shadow">
+    <div class="p-4">
+        <h2 class="text-2xl font-bold text-center text-darkblue-700">Partner</h2>
+        <div class="flex flex-row mt-4 justify-center">
+            {% for partner_item in partner %}
+            <div class="p-4 border border-gray-200 rounded-lg shadow mr-4">
+                <h3 class="text-lg font-bold text-darkblue-700 mb-2">{{ partner_item.nama }}</h3>
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="px-2 py-1 bg-blue-500 text-white text-sm rounded">{{ partner_item.jabatan }}</span>
+                    <span class="px-2 py-1 bg-green-500 text-white text-sm rounded">
+                        {{ partner_item.status_sertifikasi}}
+                    </span>
+                    <span class="px-2 py-1 bg-yellow-500 text-white text-sm rounded">
+                        {% if partner_item.status_kuasa_hukum == "Ya" %}
+                        Attorney
+                        {% else %}
+                        Not Attorney
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex flex-col mb-2">
+                    <span class="text-darkblue-700 text-sm">Attorney License:</span>
+                    <span class="text-gray-700 font-medium">{{ partner_item.izin_berlaku_attorney }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-darkblue-700 text-sm">Consultant License:</span>
+                    <span class="text-gray-700 font-medium">{{ partner_item.izin_berlaku_konsultan }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="w-full bg-white border border-gray-200 rounded-lg shadow mt-4">
+    <div class="p-4">
+        <h2 class="text-2xl font-bold text-center text-darkblue-700">Senior Manager</h2>
+        <div class="flex flex-row mt-4 justify-center">
+            {% for senior_manager_item in senior_manager %}
+            <div class="p-4 border border-gray-200 rounded-lg shadow mr-4">
+                <h3 class="text-lg font-bold text-darkblue-700 mb-2">{{ senior_manager_item.nama }}</h3>
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="px-2 py-1 bg-blue-500 text-white text-sm rounded">
+                        {{ senior_manager_item.jabatan}}
+                    </span>
+                    <span class="px-2 py-1 bg-green-500 text-white text-sm rounded">
+                        {{ senior_manager_item.status_sertifikasi}}
+                    </span>
+                    <span class="px-2 py-1 bg-yellow-500 text-white text-sm rounded">
+                        {% if senior_manager_item.status_kuasa_hukum == "Ya" %}
+                        Attorney
+                        {% else %}
+                        Not Attorney
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex flex-col mb-2">
+                    <span class="text-darkblue-700 text-sm">Attorney License:</span>
+                    <span class="text-gray-700 font-medium">{{ senior_manager_item.izin_berlaku_attorney }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-darkblue-700 text-sm">Consultant License:</span>
+                    <span class="text-gray-700 font-medium">{{ senior_manager_item.izin_berlaku_konsultan }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="w-full bg-white border border-gray-200 rounded-lg shadow mt-4">
+    <div class="p-4">
+        <h2 class="text-2xl font-bold text-center text-darkblue-700">Manager</h2>
+        <div class="flex flex-row mt-4 justify-center">
+            {% for manager_item in manager %}
+            <div class="p-4 border border-gray-200 rounded-lg shadow mr-4">
+                <h3 class="text-lg font-bold text-darkblue-700 mb-2">{{ manager_item.nama }}</h3>
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="px-2 py-1 bg-blue-500 text-white text-sm rounded">
+                        {{ manager_item.jabatan}}
+                    </span>
+                    <span class="px-2 py-1 bg-green-500 text-white text-sm rounded">
+                        {{ manager_item.status_sertifikasi}}
+                    </span>
+                    <span class="px-2 py-1 bg-yellow-500 text-white text-sm rounded">
+                        {% if manager_item.status_kuasa_hukum == "Ya" %}
+                        Attorney
+                        {% else %}
+                        Not Attorney
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex flex-col mb-2">
+                    <span class="text-darkblue-700 text-sm">Attorney License:</span>
+                    <span class="text-gray-700 font-medium">{{ manager_item.izin_berlaku_attorney }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-darkblue-700 text-sm">Consultant License:</span>
+                    <span class="text-gray-700 font-medium">{{ manager_item.izin_berlaku_konsultan }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="w-full bg-white border border-gray-200 rounded-lg shadow mt-4">
+    <div class="p-4">
+        <h2 class="text-2xl font-bold text-center text-darkblue-700">Assistant Manager</h2>
+        <div class="flex flex-row mt-4 justify-center">
+            {% for assistant_manager_item in assistant_manager %}
+            <div class="p-4 border border-gray-200 rounded-lg shadow mr-4">
+                <h3 class="text-lg font-bold text-darkblue-700 mb-2">{{ assistant_manager_item.nama }}</h3>
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="px-2 py-1 bg-blue-500 text-white text-sm rounded">
+                        {{ assistant_manager_item.jabatan}}
+                    </span>
+                    <span class="px-2 py-1 bg-green-500 text-white text-sm rounded">
+                        {{ assistant_manager_item.status_sertifikasi}}
+                    </span>
+                    <span class="px-2 py-1 bg-yellow-500 text-white text-sm rounded">
+                        {% if assistant_manager_item.status_kuasa_hukum == "Ya" %}
+                        Attorney
+                        {% else %}
+                        Not Attorney
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex flex-col mb-2">
+                    <span class="text-darkblue-700 text-sm">Attorney License:</span>
+                    <span class="text-gray-700 font-medium">{{ assistant_manager_item.izin_berlaku_attorney }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-darkblue-700 text-sm">Consultant License:</span>
+                    <span class="text-gray-700 font-medium">{{ assistant_manager_item.izin_berlaku_konsultan }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="w-full bg-white border border-gray-200 rounded-lg shadow mt-4">
+    <div class="p-4">
+        <h2 class="text-2xl font-bold text-center text-darkblue-700">Senior Specialist</h2>
+        <div class="flex flex-row mt-4 justify-center">
+            {% for senior_specialist_item in senior_specialist %}
+            <div class="p-4 border border-gray-200 rounded-lg shadow mr-4">
+                <h3 class="text-lg font-bold text-darkblue-700 mb-2">{{ senior_specialist_item.nama }}</h3>
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="px-2 py-1 bg-blue-500 text-white text-sm rounded">
+                        {{ senior_specialist_item.jabatan}}
+                    </span>
+                    <span class="px-2 py-1 bg-green-500 text-white text-sm rounded">
+                        {{ senior_specialist_item.status_sertifikasi}}
+                    </span>
+                    <span class="px-2 py-1 bg-yellow-500 text-white text-sm rounded">
+                        {% if senior_specialist_item.status_kuasa_hukum == "Ya" %}
+                        Attorney
+                        {% else %}
+                        Not Attorney
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex flex-col mb-2">
+                    <span class="text-darkblue-700 text-sm">Attorney License:</span>
+                    <span class="text-gray-700 font-medium">{{ senior_specialist_item.izin_berlaku_attorney }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-darkblue-700 text-sm">Consultant License:</span>
+                    <span class="text-gray-700 font-medium">{{ senior_specialist_item.izin_berlaku_konsultan }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="w-full bg-white border border-gray-200 rounded-lg shadow mt-4">
+    <div class="p-4">
+        <h2 class="text-2xl font-bold text-center text-darkblue-700">Specialist</h2>
+        <div class="flex flex-row mt-4 justify-center">
+            {% for specialist_item in specialist %}
+            <div class="p-4 border border-gray-200 rounded-lg shadow mr-4">
+                <h3 class="text-lg font-bold text-darkblue-700 mb-2">{{ specialist_item.nama }}</h3>
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="px-2 py-1 bg-blue-500 text-white text-sm rounded">
+                        {{ specialist_item.jabatan}}
+                    </span>
+                    <span class="px-2 py-1 bg-green-500 text-white text-sm rounded">
+                        {{ specialist_item.status_sertifikasi}}
+                    </span>
+                    <span class="px-2 py-1 bg-yellow-500 text-white text-sm rounded">
+                        {% if specialist_item.status_kuasa_hukum == "Ya" %}
+                        Attorney
+                        {% else %}
+                        Not Attorney
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="flex flex-col mb-2">
+                    <span class="text-darkblue-700 text-sm">Attorney License:</span>
+                    <span class="text-gray-700 font-medium">{{ specialist_item.izin_berlaku_attorney }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-darkblue-700 text-sm">Consultant License:</span>
+                    <span class="text-gray-700 font-medium">{{ specialist_item.izin_berlaku_konsultan }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}

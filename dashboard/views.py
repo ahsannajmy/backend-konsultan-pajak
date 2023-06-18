@@ -59,7 +59,7 @@ def user_notification(request):
         context = {
             'detail' : "Saat ini tidak ada notifikasi yang masuk"
         }
-        return render(request,"notifikasi.html",context)
+        return render(request,"super_user/notifikasi.html",context)
     
     context = {
         'notifikasi' : notifikasi
@@ -71,11 +71,14 @@ def user_notification(request):
         pesan = request.POST.get('update_reason')
 
         informasi_karyawan = InformasiKaryawan.objects.get(nama=nama)
-        notifikasi = Notifications.objects.get(user=request.user.id,informasi_karyawan=informasi_karyawan)
+        super_user = CustomUser.objects.filter(role="Super User")
+        super_user_notifikasi = Notifications.objects.filter(user__in=super_user,informasi_karyawan=informasi_karyawan)
+        # notifikasi = Notifications.objects.get(user=request.user.id,informasi_karyawan=informasi_karyawan)
         user_admins = CustomUser.objects.filter(role="Admin")
 
         if status == "Accepted" :
-            notifikasi.delete()
+            for notifikasi in super_user_notifikasi:
+                notifikasi.delete()
             informasi_karyawan.status = "Accepted"
             informasi_karyawan.save()
             success_message = "Personel diterima"
@@ -88,8 +91,9 @@ def user_notification(request):
             messages.success(request, success_message)
             return redirect('dashboard:user-notification')
         elif status == "Requested for update":
-            notifikasi.status = "Requested for update"
-            notifikasi.save()
+            for notifikasi in super_user_notifikasi:
+                notifikasi.status = "Requested for update"
+                notifikasi.save()
             for user_admin in user_admins:
                 notifikasi_admin = AdminNotifications(user=user_admin,informasi_karyawan=informasi_karyawan,pesan=pesan)
                 notifikasi_admin.save()
@@ -113,15 +117,49 @@ def admin_notifikasi(request):
     }
 
     if request.method == "POST":
-        pass
+        nama_lama = request.POST.get('nama-lama')
+        informasi_karyawan = InformasiKaryawan.objects.get(nama=nama_lama)
 
+        informasi_karyawan.nama = request.POST.get('nama')
+        informasi_karyawan.jabatan = request.POST.get('jabatan')
+        informasi_karyawan.status_sertifikasi = request.POST.get('status_sertifikasi')
+        informasi_karyawan.status_kuasa_hukum = request.POST.get('status_kuasa_hukum')
+        informasi_karyawan.izin_berlaku_attorney = datetime.strptime(request.POST.get('izin_berlaku_attorney'), "%m/%d/%Y").strftime("%Y-%m-%d")
+        informasi_karyawan.izin_berlaku_konsultan = datetime.strptime(request.POST.get('izin_berlaku_konsultan'), "%m/%d/%Y").strftime("%Y-%m-%d")
+        informasi_karyawan.status = "Pending"
+        users_admin = CustomUser.objects.filter(role="Admin")
+
+        try:
+            for user_admin in users_admin:
+                admin_notifikasi = AdminNotifications.objects.get(user=user_admin,informasi_karyawan=informasi_karyawan)
+                admin_notifikasi.delete()
+            informasi_karyawan.save()
+            success_message = "Personel karyawan berhasil diperbaiki (Menunggu approval)"
+            messages.success(request, success_message)
+            return redirect("dashboard:admin-notification")
+        except IntegrityError:
+            messages.error(request,"Nama karyawan sudah ada")
+            return redirect("dashboard:admin-notification")
+        
     return render(request,"admin/admin-notifikasi.html",context)
 
 def teams(request):
-    partner = InformasiKaryawan.objects.filter(jabatan="Partner")
-    senior_manager = InformasiKaryawan.objects.filter(jabatan="Senior Manager")
+    partner = InformasiKaryawan.objects.filter(jabatan="Partner",status="Accepted")
+    senior_manager = InformasiKaryawan.objects.filter(jabatan="Senior Manager",status="Accepted")
     manager = InformasiKaryawan.objects.filter(jabatan="Manager")
-    asisstant_manager = InformasiKaryawan.objects.filter(jabatan="Assistant Manager")
-    senior_specialist = InformasiKaryawan.objects.filter(jabatan="Senior Specialist")
-    specialist = InformasiKaryawan.objects.filter(jabatan="Specialist")
-    admin = InformasiKaryawan.objects.filter(jabatan="Admin")
+    asisstant_manager = InformasiKaryawan.objects.filter(jabatan="Assistant Manager",status="Accepted")
+    senior_specialist = InformasiKaryawan.objects.filter(jabatan="Senior Specialist",status="Accepted")
+    specialist = InformasiKaryawan.objects.filter(jabatan="Specialist",status="Accepted")
+    admin = InformasiKaryawan.objects.filter(jabatan="Admin",status="Accepted")
+    
+    content = {
+        "partner" : partner,
+        "senior_manager" : senior_manager,
+        "manager" : manager,
+        "assistant_manager" : asisstant_manager,
+        "senior_specialist" : senior_specialist,
+        "specialist" : specialist,
+        "admin" : admin 
+    }
+
+    return render(request,"base/teams.html",content)

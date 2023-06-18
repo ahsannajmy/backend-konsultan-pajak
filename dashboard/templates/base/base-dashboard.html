@@ -2,10 +2,12 @@
 {% load static %}
 
 <head>
+  <link rel="icon" href="{% static 'assets/DDTC-Logo.png' %}" type="image/x-icon">
   <title>{% block title %}{% endblock%}</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script>
@@ -113,7 +115,7 @@
             </a>
         </li>
         <li>
-          <a href="#"
+          <a href="{% url 'dashboard:teams' %}"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-darkblue-700 hover:text-white dark:hover:bg-gray-700">
             <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

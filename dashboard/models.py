@@ -9,10 +9,31 @@ class InformasiKaryawan(models.Model):
         ('Pending','Pending')
     )
 
+    JABATAN = (
+        ('Partner','Partner'),
+        ('Senior Manager','Senior Manager'),
+        ('Manager','Manager'),
+        ('Assistant Manager','Assistant Manager'),
+        ('Senior Specialist','Senior Specialist'),
+        ('Specialist','Specialist'),
+        ('Admin','Admin')
+    )
+
+    STATUS_SERTIFIKASI = (
+        ('A','A'),
+        ('B','B'),
+        ('C','C'),
+        ('Bukan Konsultan Pajak','Bukan Konsultan Pajak')
+    )
+
+    STATUS_KUASA_HUKUM = (
+        ('Ya','Ya'),
+        ('Bukan Kuasa Hukum','Bukan Kuasa Hukum')
+    )
     nama = models.CharField(max_length=150,unique=True)
-    jabatan = models.CharField(max_length=50)
-    status_sertifikasi = models.CharField(max_length=50)
-    status_kuasa_hukum = models.CharField(max_length=50)
+    jabatan = models.CharField(choices=JABATAN,max_length=50)
+    status_sertifikasi = models.CharField(choices=STATUS_SERTIFIKASI,max_length=50)
+    status_kuasa_hukum = models.CharField(choices=STATUS_KUASA_HUKUM,max_length=50)
     izin_berlaku_attorney = models.DateField(default=None,null=True,blank=True)
     izin_berlaku_konsultan = models.DateField(default=None,null=True,blank=True)
     status = models.CharField(choices=STATUS,default="Pending",max_length=50)
