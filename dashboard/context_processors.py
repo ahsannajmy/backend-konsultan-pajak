@@ -10,12 +10,13 @@ def notification(request):
             return {
                 'number_of_admin_notifications' : len(number_of_admin_notifications)
             }
+        else:
+            number_of_notifications = Notifications.objects.filter(user=request.user.id,is_read=False)
 
-    number_of_notifications = Notifications.objects.filter(user=request.user.id,is_read=False)
-
-    return {
-        'number_of_notifications' : len(number_of_notifications)
-    }
+            return {
+                'number_of_notifications' : len(number_of_notifications)
+            }
+    return {}
 
 def user_information(request):
 

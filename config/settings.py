@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+import dj_database_url
 
 env = environ.Env()
 
@@ -92,14 +93,20 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # db_password = env.str('DB_PASSWORD')
 # db_name = env.str('DB_NAME')
 
+DEPLOYMENT = os.getenv("DATABASE_URL") is not None
 
-DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-    'default' : env.db()
-}
+if DEPLOYMENT:
+    DATABASES = {
+        "default": dj_database_url.config(),
+    }
+else:
+    DATABASES = {
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.sqlite3',
+        #     'NAME': BASE_DIR / 'db.sqlite3',
+        # }
+        'default' : env.db()
+    }
 
 
 # Password validation
