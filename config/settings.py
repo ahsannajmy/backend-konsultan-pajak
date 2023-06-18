@@ -32,7 +32,13 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUESTED_ORIGINS = [
+    'https://web-production-e7b2.up.railway.app',
+    # Add any other trusted origins here
+]
+CORS_ALLOWED_ORIGINS = [
+    'https://web-production-e7b2.up.railway.app',
+]
 
 AUTH_USER_MODEL = "authentication.CustomUser"
 # Application definition
@@ -101,10 +107,6 @@ if DEPLOYMENT:
     }
 else:
     DATABASES = {
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.sqlite3',
-        #     'NAME': BASE_DIR / 'db.sqlite3',
-        # }
         'default' : env.db()
     }
 
