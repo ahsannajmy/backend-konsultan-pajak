@@ -37,7 +37,7 @@ def user_license(request):
                 'izin_berlaku_attorney' : informasi_karyawan.days_until_izin_berlaku_attorney,
                 'izin_berlaku_konsultan' : informasi_karyawan.days_until_izin_berlaku_konsultan
             }
-        except IntegrityError:
+        except InformasiKaryawan.DoesNotExist:
             return {
                 'information' : 'Ada ketidaksesuain antara nama pengguna dengan nama di tim kontak admin untuk mengubahnya!'
             }

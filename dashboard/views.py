@@ -9,8 +9,6 @@ from datetime import datetime
 
 @login_required(login_url='authentication:login-form')
 def main(request):
-    informasi_karyawan = InformasiKaryawan.objects.get(nama=request.user.nama)
-    print(informasi_karyawan.days_until_izin_berlaku_attorney)
     return render(request,"base/main.html")
 
 @login_required(login_url='authentication:login-form')
