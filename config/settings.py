@@ -32,9 +32,8 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUESTED_ORIGINS = [
+CSRF_TRUSTED_ORIGINS = [
     'https://web-production-e7b2.up.railway.app',
-    # Add any other trusted origins here
 ]
 CORS_ALLOWED_ORIGINS = [
     'https://web-production-e7b2.up.railway.app',
