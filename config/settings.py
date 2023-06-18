@@ -98,7 +98,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # db_password = env.str('DB_PASSWORD')
 # db_name = env.str('DB_NAME')
 
-DEPLOYMENT = os.getenv("DATABASE_URL") is not None
+DEPLOYMENT = os.getenv("PRODUCTION_DATABASE_URL") is not None
 db_name = os.getenv("PGDATABASE")
 db_username = os.getenv("PGUSER")
 db_password = os.getenv("PGPASSWORD")
