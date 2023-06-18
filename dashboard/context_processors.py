@@ -1,4 +1,5 @@
-from .models import Notifications,AdminNotifications
+from .models import Notifications,AdminNotifications,InformasiKaryawan
+from django.db import IntegrityError
 
 def notification(request):
 
@@ -26,3 +27,22 @@ def user_information(request):
         }
     
     return {}
+
+def user_license(request):
+
+    if request.user.is_authenticated:
+        try:
+            informasi_karyawan = InformasiKaryawan.objects.get(nama=request.user.nama)
+            return {
+                'izin_berlaku_attorney' : informasi_karyawan.days_until_izin_berlaku_attorney,
+                'izin_berlaku_konsultan' : informasi_karyawan.days_until_izin_berlaku_konsultan
+            }
+        except IntegrityError:
+            return {
+                'information' : 'Ada ketidaksesuain antara nama pengguna dengan nama di tim kontak admin untuk mengubahnya!'
+            }
+            
+    return {}
+
+    
+    

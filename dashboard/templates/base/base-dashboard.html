@@ -60,6 +60,38 @@
             </span>
           </h1>
         </div>
+        <div class="flex items-center justify-end">
+          {% if izin_berlaku_konsultan %}
+          {% if izin_berlaku_konsultan <= 30 %} <span
+            class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+            Masa Berlaku Konsultan {{ izin_berlaku_konsultan }} Hari Lagi </span>
+            {% else %}
+            <span
+              class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+              Masa Berlaku Konsultan {{ izin_berlaku_konsultan }} Hari Lagi
+            </span>
+            {% endif %}
+            {% else %}
+            {% endif %}
+            {% if izin_berlaku_attorney %}
+            {% if izin_berlaku_attorney <= 30 %} <span
+              class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+              Masa Berlaku Konsultan {{ izin_berlaku_konsultan }} Hari Lagi </span>
+              {% else %}
+              <span
+                class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+                Masa Berlaku Attorney {{ izin_berlaku_attorney }} Hari Lagi
+              </span>
+              {% endif %}
+              {% else %}
+              {% endif %}
+              {% if information %}
+              <span
+                class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+                {{ information }}
+              </span>
+              {% endif %}
+        </div>
       </div>
     </div>
   </nav>

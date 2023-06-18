@@ -9,6 +9,8 @@ from datetime import datetime
 
 @login_required(login_url='authentication:login-form')
 def main(request):
+    informasi_karyawan = InformasiKaryawan.objects.get(nama=request.user.nama)
+    print(informasi_karyawan.days_until_izin_berlaku_attorney)
     return render(request,"base/main.html")
 
 @login_required(login_url='authentication:login-form')
@@ -18,8 +20,14 @@ def admin_tambah_personel(request):
         jabatan = request.POST.get('jabatan')
         status_sertifikasi = request.POST.get('status_sertifikasi')
         status_kuasa_hukum = request.POST.get('status_kuasa_hukum')
-        izin_berlaku_attorney = datetime.strptime(request.POST.get('izin_berlaku_attorney'), "%m/%d/%Y").strftime("%Y-%m-%d")
-        izin_berlaku_konsultan = datetime.strptime(request.POST.get('izin_berlaku_konsultan'), "%m/%d/%Y").strftime("%Y-%m-%d")
+        if request.POST.get('izin_berlaku_attorney') is None:
+            izin_berlaku_attorney = None
+        else:
+            izin_berlaku_attorney = datetime.strptime(request.POST.get('izin_berlaku_attorney'), "%m/%d/%Y").strftime("%Y-%m-%d")
+        if request.POST.get('izin_berlaku_konsultan') is None:
+            izin_berlaku_konsultan = None
+        else:
+            izin_berlaku_konsultan = datetime.strptime(request.POST.get('izin_berlaku_konsultan'), "%m/%d/%Y").strftime("%Y-%m-%d")
 
         informasi_karyawan = InformasiKaryawan(
             nama=nama,

@@ -1,5 +1,6 @@
 from django.db import models
 from authentication.models import CustomUser
+from datetime import date
 
 # Create your models here.
 class InformasiKaryawan(models.Model):
@@ -37,9 +38,37 @@ class InformasiKaryawan(models.Model):
     izin_berlaku_attorney = models.DateField(default=None,null=True,blank=True)
     izin_berlaku_konsultan = models.DateField(default=None,null=True,blank=True)
     status = models.CharField(choices=STATUS,default="Pending",max_length=50)
+
     def __str__(self):
         return self.nama
+    
+    @property
+    def formatted_izin_berlaku_konsultan(self):
+        if self.izin_berlaku_konsultan:
+            return self.izin_berlaku_konsultan
+        return "-"
+    
+    @property
+    def formatted_izin_berlaku_attorney(self):
+        if self.izin_berlaku_attorney:
+            return self.izin_berlaku_attorney
+        return "-"
 
+    @property
+    def days_until_izin_berlaku_konsultan(self):
+        if self.izin_berlaku_konsultan:
+            today = date.today()
+            delta = self.izin_berlaku_konsultan - today
+            return delta.days
+        return None
+    
+    @property
+    def days_until_izin_berlaku_attorney(self):
+        if self.izin_berlaku_attorney:
+            today = date.today()
+            delta = self.izin_berlaku_attorney - today
+            return delta.days
+        return None
 
 class Notifications(models.Model):
 

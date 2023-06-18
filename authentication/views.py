@@ -34,6 +34,9 @@ def register(request):
 
         user = CustomUser(nama=nama,email=email,password=password,role="User")
         user.save()
+
+        success_message = "Akun baru telah dibuat"
+        messages.success(request,success_message)
         return redirect('authentication:login-form')
     return render(request,'register.html')
 

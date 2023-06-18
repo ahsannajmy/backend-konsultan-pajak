@@ -44,13 +44,23 @@
 
         {% if messages %}
         {% for message in messages %}
+        {% if message.tags == "success" %}
         <script>
             swal({
-                icon: "error",
+                icon: "{{ message.tags }}",
+                title: "Berhasil",
+                text: "{{ message }}",
+            });
+        </script>
+        {% else %}
+        <script>
+            swal({
+                icon: "{{ message.tags }}",
                 title: "Gagal",
                 text: "{{ message }}",
             });
         </script>
+        {% endif %}
         {% endfor %}
         {% endif %}
     </div>
