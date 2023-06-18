@@ -33,10 +33,10 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
-    'https://web-production-e7b2.up.railway.app',
+    'https://dashboard-konsultan-pajak.up.railway.app',
 ]
 CORS_ALLOWED_ORIGINS = [
-    'https://web-production-e7b2.up.railway.app',
+    'https://dashboard-konsultan-pajak.up.railway.app',
 ]
 
 AUTH_USER_MODEL = "authentication.CustomUser"
@@ -99,11 +99,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # db_name = env.str('DB_NAME')
 
 DEPLOYMENT = os.getenv("DATABASE_URL") is not None
-# db_name = os.getenv("PGDATABASE")
-# db_username = os.getenv("PGUSER")
-# db_password = os.getenv("PGPASSWORD")
-# db_host = os.getenv("PGHOST")
-# db_port = os.getenv("PGPORT")
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DEPLOYMENT:
