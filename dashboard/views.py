@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.db.models import Case,When
 from .models import InformasiKaryawan,Notifications,AdminNotifications
 from authentication.models import CustomUser
 from datetime import datetime
@@ -150,22 +151,39 @@ def admin_notifikasi(request):
     return render(request,"admin/admin-notifikasi.html",context)
 
 def teams(request):
+
+    if request.method == "POST":
+        pass
+
     partner = InformasiKaryawan.objects.filter(jabatan="Partner",status="Accepted")
-    senior_manager = InformasiKaryawan.objects.filter(jabatan="Senior Manager",status="Accepted")
-    manager = InformasiKaryawan.objects.filter(jabatan="Manager")
-    asisstant_manager = InformasiKaryawan.objects.filter(jabatan="Assistant Manager",status="Accepted")
-    senior_specialist = InformasiKaryawan.objects.filter(jabatan="Senior Specialist",status="Accepted")
-    specialist = InformasiKaryawan.objects.filter(jabatan="Specialist",status="Accepted")
+    managers = InformasiKaryawan.objects.filter(
+        jabatan__in=["Senior Manager", "Manager", "Assistant Manager"], status="Accepted"
+    ).order_by(
+        Case(
+            When(jabatan="Senior Manager", then=0),
+            When(jabatan="Manager", then=1),
+            When(jabatan="Assistant Manager", then=2),
+            default=2
+        )
+    )
+    specialists = InformasiKaryawan.objects.filter(
+        jabatan__in=["Senior Specialist", "Specialist"], status="Accepted"
+    ).order_by(
+        Case(
+            When(jabatan="Senior Specialist", then=0),
+            When(jabatan="Specialist", then=1),
+            default=2
+        )
+    )
     admin = InformasiKaryawan.objects.filter(jabatan="Admin",status="Accepted")
+
     
     content = {
         "partner" : partner,
-        "senior_manager" : senior_manager,
-        "manager" : manager,
-        "assistant_manager" : asisstant_manager,
-        "senior_specialist" : senior_specialist,
-        "specialist" : specialist,
+        "manager" : managers,
+        "specialist" : specialists,
         "admin" : admin 
     }
 
     return render(request,"base/teams.html",content)
+
