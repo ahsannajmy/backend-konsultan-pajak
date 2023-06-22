@@ -362,7 +362,7 @@ DDTC | Tim
                     <div class="relative z-0 w-full mb-6 group">
                         <label for="underline_select" class="sr-only">Underline
                             select</label>
-                        <select id="underline_select" name="status_sertifikasi"
+                        <select id="underline_select status_sertifikasi" name="status_sertifikasi"
                             class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                             <option selected disabled>Status Sertifikasi
                             </option>
@@ -374,7 +374,7 @@ DDTC | Tim
                         </select>
                     </div>
                     <div class="relative z-0 w-full mb-6 group">
-                        <select id="underline_select" name="status_kuasa_hukum"
+                        <select id="underline_select status_kuasa_hukum" name="status_kuasa_hukum"
                             class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
                             <option selected disabled>Status Kuasa Hukum
                             </option>
@@ -395,9 +395,9 @@ DDTC | Tim
                                         clip-rule="evenodd"></path>
                                 </svg>
                             </div>
-                            <input datepicker datepicker-autohide type="text" name="izin_berlaku_attorney"
+                            <input datepicker datepicker-autohide type="text" name="izin_berlaku_konsultan"
                                 class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Masukkan izin berlaku (attorney)" />
+                                placeholder="Masukkan izin berlaku (konsultan)" />
                         </div>
                     </div>
                     <div class="relative z-0 w-full mb-6 group">
@@ -410,13 +410,12 @@ DDTC | Tim
                                         clip-rule="evenodd"></path>
                                 </svg>
                             </div>
-                            <input datepicker datepicker-autohide type="text" name="izin_berlaku_konsultan"
+                            <input datepicker datepicker-autohide type="text" name="izin_berlaku_attorney"
                                 class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Masukkan izin berlaku (konsultan)" />
+                                placeholder="Masukkan izin berlaku (attorney)" />
                         </div>
                     </div>
                 </div>
-
             </div>
             <!-- Modal footer -->
             <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -429,6 +428,23 @@ DDTC | Tim
         </div>
     </div>
 </div>
+
 {% else %}
 {% endif %}
-{% endblock %}
+<script>
+    const selectInputKonsultan = document.getElementById('underline_select status_sertifikasi');
+    const selectInputAttorney = document.getElementById('underline_select status_kuasa_hukum');
+    const datePickerInputKonsultan = document.querySelector('input[name="izin_berlaku_konsultan"]');
+    const datePickerInputAttorney = document.querySelector('input[name="izin_berlaku_attorney"]');
+
+    selectInputKonsultan.addEventListener('change', function () {
+        const selectedValue = this.value;
+        datePickerInputKonsultan.disabled = (selectedValue === 'Bukan Konsultan Pajak')
+    });
+
+    selectInputAttorney.addEventListener('change', function () {
+        const selectedValue = this.value;
+        datePickerInputAttorney.disabled = (selectedValue === 'Bukan Kuasa Hukum')
+    });
+</script>
+{% endblock content %}
