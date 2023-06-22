@@ -37,6 +37,16 @@ DDTC | Tim
                     <span class="text-darkblue-700 text-sm">Consultant License:</span>
                     <span class="text-gray-700 font-medium">{{ partner_item.formatted_izin_berlaku_konsultan }}</span>
                 </div>
+                {% if role == "Admin" %}
+                <div class="flex flex-col items-start mt-4">
+                    <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"
+                        class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Edit Personel
+                    </button>
+                </div>
+                {% else %}
+                {% endif %}
             </div>
             {% endfor %}
         </div>
@@ -79,6 +89,16 @@ DDTC | Tim
                         {{ senior_manager_item.formatted_izin_berlaku_konsultan}}
                     </span>
                 </div>
+                {% if role == "Admin" %}
+                <div class="flex flex-col items-start mt-4">
+                    <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"
+                        class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Edit Personel
+                    </button>
+                </div>
+                {% else %}
+                {% endif %}
             </div>
             {% endfor %}
         </div>
@@ -117,6 +137,16 @@ DDTC | Tim
                     <span class="text-darkblue-700 text-sm">Consultant License:</span>
                     <span class="text-gray-700 font-medium">{{ manager_item.formatted_izin_berlaku_konsultan }}</span>
                 </div>
+                {% if role == "Admin" %}
+                <div class="flex flex-col items-start mt-4">
+                    <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"
+                        class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Edit Personel
+                    </button>
+                </div>
+                {% else %}
+                {% endif %}
             </div>
             {% endfor %}
         </div>
@@ -159,6 +189,16 @@ DDTC | Tim
                         {{ assistant_manager_item.formatted_izin_berlaku_konsultan }}
                     </span>
                 </div>
+                {% if role == "Admin" %}
+                <div class="flex flex-col items-start mt-4">
+                    <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"
+                        class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Edit Personel
+                    </button>
+                </div>
+                {% else %}
+                {% endif %}
             </div>
             {% endfor %}
         </div>
@@ -201,6 +241,16 @@ DDTC | Tim
                         {{ senior_specialist_item.formatted_izin_berlaku_konsultan }}
                     </span>
                 </div>
+                {% if role == "Admin" %}
+                <div class="flex flex-col items-start mt-4">
+                    <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"
+                        class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Edit Personel
+                    </button>
+                </div>
+                {% else %}
+                {% endif %}
             </div>
             {% endfor %}
         </div>
@@ -241,10 +291,144 @@ DDTC | Tim
                         {{ specialist_item.formatted_izin_berlaku_konsultan }}
                     </span>
                 </div>
+                {% if role == "Admin" %}
+                <div class="flex flex-col items-start mt-4">
+                    <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"
+                        class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Edit Personel
+                    </button>
+                </div>
+                {% else %}
+                {% endif %}
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
+<!-- Modal Action -->
+{% if role == "Admin" %}
+<div id="defaultModal" tabindex="-1" aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Update Employee
+                </h3>
+                <button type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-hide="defaultModal">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-6 space-y-6">
+                <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit
+                    Personel</h2>
+                <div class="relative z-0 w-full mb-6 group">
+                    <input type="text" name="nama" id="nama" value="{{ notifikasi_item.informasi_karyawan.nama }}"
+                        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" " required />
+                    <label for="nama"
+                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nama</label>
+                </div>
+                <div class="relative z-0 w-full mb-6 group">
+                    <label for="underline_select" class="sr-only">Underline
+                        select</label>
+                    <select id="underline_select" name="jabatan"
+                        class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                        <option selected disabled>Jabatan</option>
+                        <option value="Partner">Partner</option>
+                        <option value="Senior Manager">Senior Manager</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Assistant Manager">Assistant Manager
+                        </option>
+                        <option value="Senior Specialist">Senior Specialist
+                        </option>
+                        <option value="Specialist">Specialist</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="grid md:grid-cols-2 md:gap-6">
+                    <div class="relative z-0 w-full mb-6 group">
+                        <label for="underline_select" class="sr-only">Underline
+                            select</label>
+                        <select id="underline_select" name="status_sertifikasi"
+                            class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                            <option selected disabled>Status Sertifikasi
+                            </option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="Bukan Konsultan Pajak">Bukan
+                                Konsultan Pajak</option>
+                        </select>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+                        <select id="underline_select" name="status_kuasa_hukum"
+                            class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                            <option selected disabled>Status Kuasa Hukum
+                            </option>
+                            <option value="Ya">Ya</option>
+                            <option value="Bukan Kuasa Hukum">Bukan Kuasa Hukum
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 md:gap-6">
+                    <div class="relative z-0 w-full mb-6 group">
+                        <div class="relative max-w-sm">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                    fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <input datepicker datepicker-autohide type="text" name="izin_berlaku_attorney"
+                                class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Masukkan izin berlaku (attorney)" />
+                        </div>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+                        <div class="relative max-w-sm">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                    fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <input datepicker datepicker-autohide type="text" name="izin_berlaku_konsultan"
+                                class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Masukkan izin berlaku (konsultan)" />
+                        </div>
+                    </div>
+                </div>
 
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button type="submit"
+                    class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Submit
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+{% endif %}
 {% endblock %}

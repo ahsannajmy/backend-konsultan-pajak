@@ -31,9 +31,15 @@
                             type="submit">
                             Login
                         </button>
-                        <p class="block mt-4 font-bold text-white font-sans">Register <a
-                                href="{% url 'authentication:register' %}"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">here</a></p>
+                        <p class="block mt-4 font-bold text-white font-sans">Register
+                            <a href="{% url 'authentication:register-form' %}"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                here
+                            </a> or login as super user
+                            <a href="/admin/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                here
+                            </a>
+                        </p>
                     </div>
                 </div>
 

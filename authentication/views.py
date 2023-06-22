@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
 from .models import CustomUser
+from django.db import IntegrityError
 # Create your views here.
 
 def login(request):
@@ -33,8 +34,14 @@ def register(request):
         password = request.POST.get('password')
 
         user = CustomUser(nama=nama,email=email,password=password,role="User")
-        user.save()
 
+        try:
+            user.save()
+        except IntegrityError:
+            error_message = "Akun dengan email tersebut sudah tersedia"
+            messages.error(request,error_message)
+            return redirect('authentication:register-form')
+        
         success_message = "Akun baru telah dibuat"
         messages.success(request,success_message)
         return redirect('authentication:login-form')
@@ -42,4 +49,5 @@ def register(request):
 
 def logout_view(request):
     logout(request)
+    messages.success(request,"Anda telah logout")
     return redirect('authentication:login-form')
