@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -6,7 +7,9 @@ from django.db.models import Case,When
 from .models import InformasiKaryawan,Notifications,AdminNotifications
 from authentication.models import CustomUser
 from datetime import datetime
+from .xlsx_utils import import_karyawan_from_xlsx
 # Create your views here.
+
 
 @login_required(login_url='authentication:login-form')
 def main(request):
@@ -14,19 +17,33 @@ def main(request):
 
 @login_required(login_url='authentication:login-form')
 def admin_tambah_personel(request):
-    if request.method == "POST":
+    if request.method == "POST" and "personel-file" in request.FILES:
+        personel_file = request.FILES['personel-file']
+        if personel_file:
+            try:
+                import_karyawan_from_xlsx(personel_file)
+            except IntegrityError:
+                messages.error(request,"Nama karyawan sudah ada")
+                return redirect("dashboard:tambah-personel")
+
+            success_message = "Personel karyawan berhasil ditambahkan melalui file"
+            messages.success(request, success_message)
+            return redirect("dashboard:tambah-personel")
+    elif request.method == "POST":
+        print("salah")
         nama = request.POST.get('nama')
         jabatan = request.POST.get('jabatan')
         status_sertifikasi = request.POST.get('status_sertifikasi')
         status_kuasa_hukum = request.POST.get('status_kuasa_hukum')
-        if request.POST.get('izin_berlaku_attorney') is None:
-            izin_berlaku_attorney = None
-        else:
+        
+        try:
             izin_berlaku_attorney = datetime.strptime(request.POST.get('izin_berlaku_attorney'), "%m/%d/%Y").strftime("%Y-%m-%d")
-        if request.POST.get('izin_berlaku_konsultan') is None:
-            izin_berlaku_konsultan = None
-        else:
+        except TypeError or ValueError:
+            izin_berlaku_attorney = None
+        try:
             izin_berlaku_konsultan = datetime.strptime(request.POST.get('izin_berlaku_konsultan'), "%m/%d/%Y").strftime("%Y-%m-%d")
+        except TypeError or ValueError:
+            izin_berlaku_konsultan = None
 
         informasi_karyawan = InformasiKaryawan(
             nama=nama,
@@ -36,6 +53,7 @@ def admin_tambah_personel(request):
             izin_berlaku_attorney=izin_berlaku_attorney,
             izin_berlaku_konsultan=izin_berlaku_konsultan
         )
+
         try:
             informasi_karyawan.save()
         except IntegrityError:
@@ -48,7 +66,7 @@ def admin_tambah_personel(request):
             notifikasi = Notifications(
                 user=user_notified,
                 informasi_karyawan=informasi_karyawan,
-                notification_type="Informasi Karyawan"
+                notification_type="Karyawan Baru"
             )
             notifikasi.save()
 
@@ -153,7 +171,26 @@ def admin_notifikasi(request):
 def teams(request):
 
     if request.method == "POST":
-        pass
+        id = request.POST.get('id')
+        nama = request.POST.get('nama')
+        jabatan = request.POST.get('jabatan')
+        status_sertifikasi = request.POST.get('status_sertifikasi')
+        status_kuasa_hukum = request.POST.get('status_kuasa_hukum')
+        try:
+            izin_berlaku_attorney = datetime.strptime(request.POST.get('izin_berlaku_attorney'), "%m/%d/%Y").strftime("%Y-%m-%d")
+        except ValueError:
+            izin_berlaku_attorney = None
+        except TypeError:
+            izin_berlaku_attorney = None
+
+        try:
+            izin_berlaku_konsultan = datetime.strptime(request.POST.get('izin_berlaku_konsultan'), "%m/%d/%Y").strftime("%Y-%m-%d")
+        except ValueError:
+            izin_berlaku_konsultan = None
+        except TypeError:
+            izin_berlaku_konsultan = None
+
+        current_karyawan = InformasiKaryawan.objects.get(id=id)
 
     partner = InformasiKaryawan.objects.filter(jabatan="Partner",status="Accepted")
     managers = InformasiKaryawan.objects.filter(

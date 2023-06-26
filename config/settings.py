@@ -42,6 +42,8 @@ CORS_ALLOWED_ORIGINS = [
 AUTH_USER_MODEL = "authentication.CustomUser"
 # Application definition
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

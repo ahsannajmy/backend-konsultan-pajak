@@ -61,7 +61,7 @@ DDTC | Tambah Personel
           </svg>
         </div>
         <input datepicker datepicker-autohide type="text" name="izin_berlaku_konsultan"
-          class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Masukkan izin berlaku (konsultan)" />
       </div>
     </div>
@@ -76,7 +76,7 @@ DDTC | Tambah Personel
           </svg>
         </div>
         <input datepicker datepicker-autohide type="text" name="izin_berlaku_attorney"
-          class="bg-gray-50 border w-full border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Masukkan izin berlaku (attorney)" />
       </div>
     </div>
@@ -85,31 +85,49 @@ DDTC | Tambah Personel
     class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
     Submit
   </button>
-  {% if messages %}
-  {% for message in messages %}
-  {% if message.tags == "success" %}
-  <script>
-    swal({
-      icon: '{{ message.tags }}',
-      title: 'Berhasil',
-      text: '{{ message }}',
-      customClass: {
-        content: 'swal-text'
-      }
-    });
-  </script>
-  {% else %}
-  <script>
-    swal({
-      icon: '{{ message.tags }}',
-      title: 'Gagal',
-      text: '{{ message }}',
-    });
-  </script>
-  {% endif %}
-  {% endfor %}
-  {% endif %}
 </form>
+<form class="p-4" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div>
+    <h2 class="text-2xl font-bold text-darkblue-700 mb-4">Upload With Files</h2>
+  </div>
+  <div class="flex items-center justify-center w-1/2 mb-2">
+    <input
+      class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+      id="personel-file" name="personel-file" type="file" accept=".xlsx" required>
+  </div>
+  <button type="submit"
+    class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+    Submit
+  </button>
+</form>
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == "success" %}
+<script>
+  swal({
+    icon: '{{ message.tags }}',
+    title: 'Berhasil',
+    text: '{{ message }}',
+    customClass: {
+      content: 'swal-text'
+    }
+  });
+</script>
+{% else %}
+<script>
+  swal({
+    icon: '{{ message.tags }}',
+    title: 'Gagal',
+    text: '{{ message }}',
+  });
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+
 <script>
   const selectInputKonsultan = document.getElementById('underline_select status_sertifikasi');
   const selectInputAttorney = document.getElementById('underline_select status_kuasa_hukum');
@@ -126,4 +144,5 @@ DDTC | Tambah Personel
     datePickerInputAttorney.disabled = (selectedValue === 'Bukan Kuasa Hukum')
   });
 </script>
+
 {% endblock content %}

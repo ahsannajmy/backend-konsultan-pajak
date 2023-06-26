@@ -33,8 +33,8 @@ class InformasiKaryawan(models.Model):
     )
     nama = models.CharField(max_length=150,unique=True)
     jabatan = models.CharField(choices=JABATAN,max_length=50)
-    status_sertifikasi = models.CharField(choices=STATUS_SERTIFIKASI,max_length=50)
-    status_kuasa_hukum = models.CharField(choices=STATUS_KUASA_HUKUM,max_length=50)
+    status_sertifikasi = models.CharField(choices=STATUS_SERTIFIKASI,max_length=50,null=True)
+    status_kuasa_hukum = models.CharField(choices=STATUS_KUASA_HUKUM,max_length=50,null=True)
     izin_berlaku_attorney = models.DateField(default=None,null=True,blank=True)
     izin_berlaku_konsultan = models.DateField(default=None,null=True,blank=True)
     status = models.CharField(choices=STATUS,default="Pending",max_length=50)
@@ -72,8 +72,14 @@ class InformasiKaryawan(models.Model):
 
 class Notifications(models.Model):
 
+    # Informasi Karyawan --> Create , Delete , dan Update (Nama dan Jabatan only) untuk Super User
+    # Status dan Izin --> Update (Izin berlaku dan status only) untuk User 
+
     NOTIFICATION_TYPE = (
-        ('Informasi Karyawan','Informasi Karyawan'),
+        ('Karyawan Baru','Karyawan Baru'),
+        ('Karyawan Keluar','Karyawan Keluar'),
+        ('Jabatan','Jabatan'),
+        ('Status dan Izin','Status dan Izin'),
         ('Projek','Projek')
     )
 
