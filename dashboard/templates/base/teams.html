@@ -6,7 +6,7 @@ DDTC | Tim
 {% block content %}
 <div class="w-full bg-white border border-gray-200 rounded-lg shadow">
     <div class="p-4">
-        <h2 class="text-2xl font-bold text-center text-darkblue-700">Partner</h2>
+        <h2 class="text-4xl font-bold text-center text-darkblue-700">Partner</h2>
         <div class="grid grid-cols-3 gap-4 mt-4">
             {% for partner_item in partner %}
             <div class="p-4 border border-gray-200 rounded-lg shadow mr-4 mb-4">
@@ -32,19 +32,53 @@ DDTC | Tim
                         Not Attorney
                         {% endif %}
                     </span>
+                    {% if role == "Admin" %}
+                    {% if partner_item.status == "Accepted" %}
+                    <span
+                        class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                        {{ partner_item.status }}
+                    </span>
+                    {% elif partner_item.status == "Pending" %}
+                    <span
+                        class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
+                        {{ partner_item.status }}
+                    </span>
+                    {% elif partner_item.status == "Need Revision" %}
+                    <span
+                        class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                        {{ partner_item.status }}
+                    </span>
+                    {% endif %}
+                    {% else %}
+                    {% endif %}
                 </div>
                 <div class="flex flex-col mb-2">
                     <span class="text-darkblue-700 text-sm">Attorney License:</span>
                     <span class="text-gray-700 font-medium">{{ partner_item.formatted_izin_berlaku_attorney }}</span>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col mb-2">
                     <span class="text-darkblue-700 text-sm">Consultant License:</span>
                     <span class="text-gray-700 font-medium">{{ partner_item.formatted_izin_berlaku_konsultan }}</span>
                 </div>
+                {% if partner_item.status == "Need Revision" and role == "Admin" %}
+                <div class="flex flex-col">
+                    <span class="text-darkblue-700 text-sm">Revision Notes:</span>
+                    <span class="text-gray-700 font-medium">
+                        {{ partner_item.pesan }}
+                    </span>
+                </div>
+                {% else %}
+                {% endif %}
                 {% if role == "Admin" %}
-                <div class="flex flex-col items-start mt-4">
+                <div class="flex flex-row items-start mt-4 gap-4">
                     <button data-modal-target="defaultModalPartner {{ partner_item.nama }}"
                         data-modal-toggle="defaultModalPartner {{ partner_item.nama }}"
+                        class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Edit Position
+                    </button>
+                    <button data-modal-target="defaultModalPartnerPersonel {{ partner_item.nama }}"
+                        data-modal-toggle="defaultModalPartnerPersonel {{ partner_item.nama }}"
                         class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         type="button">
                         Edit Personel
@@ -79,15 +113,7 @@ DDTC | Tim
                                 </div>
                                 <!-- Modal body -->
                                 <div class="p-6 space-y-6">
-                                    <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit
-                                        Personel</h2>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" name="nama" id="nama" value="{{ partner_item.nama }}"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="nama"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nama</label>
-                                    </div>
+                                    <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit Position</h2>
                                     <div class="relative z-0 w-full mb-6 group">
                                         <label for="underline_select" class="sr-only">Underline
                                             select</label>
@@ -104,6 +130,57 @@ DDTC | Tim
                                             <option value="Specialist">Specialist</option>
                                             <option value="Admin">Admin</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <!-- Modal footer -->
+                                <div
+                                    class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button type="submit"
+                                        class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Submit
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ partner_item.id }}">
+                    <div id="defaultModalPartnerPersonel {{ partner_item.nama }}" tabindex="-1" aria-hidden="true"
+                        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative w-full max-w-2xl max-h-full">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <!-- Modal header -->
+                                <div
+                                    class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                        Update Employee
+                                    </h3>
+                                    <button type="button"
+                                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                        data-modal-hide="defaultModalPartnerPersonel {{ partner_item.nama }}">
+                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="p-6 space-y-6">
+                                    <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit
+                                        Personel</h2>
+                                    <div class="relative z-0 w-full mb-6 group">
+                                        <input type="text" name="nama" id="nama" value="{{ partner_item.nama }}"
+                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                            placeholder=" " required />
+                                        <label for="nama"
+                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nama</label>
                                     </div>
                                     <div class="grid md:grid-cols-2 md:gap-6">
                                         <div class="relative z-0 w-full mb-6 group">
@@ -194,7 +271,7 @@ DDTC | Tim
 </div>
 <div class="w-full bg-white border border-gray-200 rounded-lg shadow mt-4">
     <div class="p-4">
-        <h2 class="text-2xl font-bold text-center text-darkblue-700">Manager</h2>
+        <h2 class="text-4xl font-bold text-center text-darkblue-700">Manager</h2>
         <div class="grid grid-cols-3 gap-4 mt-4">
             {% for manager_item in manager %}
             <div class="p-4 border border-gray-200 rounded-lg shadow mr-4 mb-4">
@@ -220,19 +297,53 @@ DDTC | Tim
                         Not Attorney
                         {% endif %}
                     </span>
+                    {% if role == "Admin" %}
+                    {% if manager_item.status == "Accepted" %}
+                    <span
+                        class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                        {{ manager_item.status }}
+                    </span>
+                    {% elif manager_item.status == "Pending" %}
+                    <span
+                        class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
+                        {{ manager_item.status }}
+                    </span>
+                    {% elif manager_item.status == "Need Revision" %}
+                    <span
+                        class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                        {{ manager_item.status }}
+                    </span>
+                    {% endif %}
+                    {% else %}
+                    {% endif %}
                 </div>
                 <div class="flex flex-col mb-2">
                     <span class="text-darkblue-700 text-sm">Attorney License:</span>
                     <span class="text-gray-700 font-medium">{{ manager_item.formatted_izin_berlaku_attorney }}</span>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col mb-2">
                     <span class="text-darkblue-700 text-sm">Consultant License:</span>
                     <span class="text-gray-700 font-medium">{{ manager_item.formatted_izin_berlaku_konsultan }}</span>
                 </div>
+                {% if manager_item.status == "Need Revision" and role == "Admin" %}
+                <div class="flex flex-col">
+                    <span class="text-darkblue-700 text-sm">Revision Notes:</span>
+                    <span class="text-gray-700 font-medium">
+                        {{ manager_item.pesan }}
+                    </span>
+                </div>
+                {% else %}
+                {% endif %}
                 {% if role == "Admin" %}
                 <div class="flex flex-row items-start mt-4 gap-4">
                     <button data-modal-target="defaultModalManager {{ manager_item.nama }}"
                         data-modal-toggle="defaultModalManager {{ manager_item.nama }}"
+                        class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Edit Position
+                    </button>
+                    <button data-modal-target="defaultModalManagerPersonel {{ manager_item.nama }}"
+                        data-modal-toggle="defaultModalManagerPersonel {{ manager_item.nama }}"
                         class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         type="button">
                         Edit Personel
@@ -267,15 +378,7 @@ DDTC | Tim
                                 </div>
                                 <!-- Modal body -->
                                 <div class="p-6 space-y-6">
-                                    <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit
-                                        Personel</h2>
-                                    <div class="relative z-0 w-full mb-6 group">
-                                        <input type="text" name="nama" id="nama" value="{{ manager_item.nama }}"
-                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                            placeholder=" " required />
-                                        <label for="nama"
-                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nama</label>
-                                    </div>
+                                    <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit Position</h2>
                                     <div class="relative z-0 w-full mb-6 group">
                                         <label for="underline_select" class="sr-only">Underline
                                             select</label>
@@ -292,6 +395,57 @@ DDTC | Tim
                                             <option value="Specialist">Specialist</option>
                                             <option value="Admin">Admin</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <!-- Modal footer -->
+                                <div
+                                    class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button type="submit"
+                                        class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Submit
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ manager_item.id }}">
+                    <div id="defaultModalManagerPersonel {{ manager_item.nama }}" tabindex="-1" aria-hidden="true"
+                        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative w-full max-w-2xl max-h-full">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <!-- Modal header -->
+                                <div
+                                    class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                        Update Employee
+                                    </h3>
+                                    <button type="button"
+                                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                        data-modal-hide="defaultModalManagerPersonel {{ manager_item.nama }}">
+                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="p-6 space-y-6">
+                                    <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit
+                                        Personel</h2>
+                                    <div class="relative z-0 w-full mb-6 group">
+                                        <input type="text" name="nama" id="nama" value="{{ manager_item.nama }}"
+                                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                            placeholder=" " required />
+                                        <label for="nama"
+                                            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nama</label>
                                     </div>
                                     <div class="grid md:grid-cols-2 md:gap-6">
                                         <div class="relative z-0 w-full mb-6 group">
@@ -372,7 +526,6 @@ DDTC | Tim
                         </div>
                     </div>
                 </form>
-
                 {% else %}
                 {% endif %}
             </div>
@@ -382,7 +535,7 @@ DDTC | Tim
 </div>
 <div class="w-full bg-white border border-gray-200 rounded-lg shadow mt-4">
     <div class="p-4">
-        <h2 class="text-2xl font-bold text-center text-darkblue-700">Specialist</h2>
+        <h2 class="text-4xl font-bold text-center text-darkblue-700">Specialist</h2>
         <div class="grid grid-cols-3 gap-4 mt-4">
             {% for specialist_item in specialist %}
             <div class="p-4 border border-gray-200 rounded-lg shadow mr-4 mb-4">
@@ -408,21 +561,55 @@ DDTC | Tim
                         Not Attorney
                         {% endif %}
                     </span>
+                    {% if role == "Admin" %}
+                    {% if specialist_item.status == "Accepted" %}
+                    <span
+                        class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                        {{ specialist_item.status }}
+                    </span>
+                    {% elif specialist_item.status == "Pending" %}
+                    <span
+                        class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
+                        {{ specialist_item.status }}
+                    </span>
+                    {% elif specialist_item.status == "Need Revision" %}
+                    <span
+                        class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                        {{ specialist_item.status }}
+                    </span>
+                    {% endif %}
+                    {% else %}
+                    {% endif %}
                 </div>
                 <div class="flex flex-col mb-2">
                     <span class="text-darkblue-700 text-sm">Attorney License:</span>
                     <span class="text-gray-700 font-medium">{{ specialist_item.formatted_izin_berlaku_attorney }}</span>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col mb-2">
                     <span class="text-darkblue-700 text-sm">Consultant License:</span>
                     <span class="text-gray-700 font-medium">
                         {{ specialist_item.formatted_izin_berlaku_konsultan }}
                     </span>
                 </div>
+                {% if specialist_item.status == "Need Revision" and role == "Admin" %}
+                <div class="flex flex-col">
+                    <span class="text-darkblue-700 text-sm">Revision Notes:</span>
+                    <span class="text-gray-700 font-medium">
+                        {{ specialist_item.pesan }}
+                    </span>
+                </div>
+                {% else %}
+                {% endif %}
                 {% if role == "Admin" %}
                 <div class="flex flex-row items-start mt-4 gap-4">
                     <button data-modal-target="defaultModalSpecialist {{ specialist_item.nama }}"
                         data-modal-toggle="defaultModalSpecialist {{ specialist_item.nama }}"
+                        class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Edit Position
+                    </button>
+                    <button data-modal-target="defaultModalSpecialistPersonel {{ specialist_item.nama }}"
+                        data-modal-toggle="defaultModalSpecialistPersonel {{ specialist_item.nama }}"
                         class="block text-white bg-darkblue-800 hover:bg-darkblue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         type="button">
                         Edit Personel
@@ -457,6 +644,66 @@ DDTC | Tim
                                 </div>
                                 <!-- Modal body -->
                                 <div class="p-6 space-y-6">
+                                    <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit Position</h2>
+                                    <div class="relative z-0 w-full mb-6 group">
+                                        <label for="underline_select" class="sr-only">Underline
+                                            select</label>
+                                        <select id="underline_select" name="jabatan"
+                                            class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                                            <option selected disabled>Jabatan</option>
+                                            <option value="Partner">Partner</option>
+                                            <option value="Senior Manager">Senior Manager</option>
+                                            <option value="Manager">Manager</option>
+                                            <option value="Assistant Manager">Assistant Manager
+                                            </option>
+                                            <option value="Senior Specialist">Senior Specialist
+                                            </option>
+                                            <option value="Specialist">Specialist</option>
+                                            <option value="Admin">Admin</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Modal footer -->
+                                <div
+                                    class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button type="submit"
+                                        class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Submit
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ specialist_item.id }}">
+                    <div id="defaultModalSpecialistPersonel {{ specialist_item.nama }}" tabindex="-1" aria-hidden="true"
+                        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative w-full max-w-2xl max-h-full">
+                            <!-- Modal content -->
+                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <!-- Modal header -->
+                                <div
+                                    class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                        Update Employee
+                                    </h3>
+                                    <button type="button"
+                                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                        data-modal-hide="defaultModalSpecialistPersonel {{ specialist_item.nama }}">
+                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                <!-- Modal body -->
+                                <div class="p-6 space-y-6">
                                     <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit
                                         Personel</h2>
                                     <div class="relative z-0 w-full mb-6 group">
@@ -465,27 +712,6 @@ DDTC | Tim
                                             placeholder=" " required />
                                         <label for="nama"
                                             class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nama</label>
-                                    </div>
-                                    <div class="p-6 space-y-6">
-                                        <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit
-                                            Jabatan</h2>
-                                        <div class="relative z-0 w-full mb-6 group">
-                                            <label for="underline_select" class="sr-only">Underline
-                                                select</label>
-                                            <select id="underline_select" name="jabatan"
-                                                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                                                <option selected disabled>Jabatan</option>
-                                                <option value="Partner">Partner</option>
-                                                <option value="Senior Manager">Senior Manager</option>
-                                                <option value="Manager">Manager</option>
-                                                <option value="Assistant Manager">Assistant Manager
-                                                </option>
-                                                <option value="Senior Specialist">Senior Specialist
-                                                </option>
-                                                <option value="Specialist">Specialist</option>
-                                                <option value="Admin">Admin</option>
-                                            </select>
-                                        </div>
                                     </div>
                                     <div class="grid md:grid-cols-2 md:gap-6">
                                         <div class="relative z-0 w-full mb-6 group">
@@ -561,6 +787,7 @@ DDTC | Tim
                                         class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         Submit
                                     </button>
+
                                 </div>
                             </div>
                         </div>

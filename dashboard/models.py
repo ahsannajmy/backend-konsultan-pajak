@@ -7,6 +7,7 @@ class InformasiKaryawan(models.Model):
 
     STATUS = (
         ('Accepted','Accepted'),
+        ('Need Revision','Need Revision'),
         ('Pending','Pending')
     )
 
@@ -35,6 +36,7 @@ class InformasiKaryawan(models.Model):
     jabatan = models.CharField(choices=JABATAN,max_length=50)
     status_sertifikasi = models.CharField(choices=STATUS_SERTIFIKASI,max_length=50,null=True)
     status_kuasa_hukum = models.CharField(choices=STATUS_KUASA_HUKUM,max_length=50,null=True)
+    pesan = models.TextField(default=None,null=True,blank=True)
     izin_berlaku_attorney = models.DateField(default=None,null=True,blank=True)
     izin_berlaku_konsultan = models.DateField(default=None,null=True,blank=True)
     status = models.CharField(choices=STATUS,default="Pending",max_length=50)
@@ -72,14 +74,13 @@ class InformasiKaryawan(models.Model):
 
 class Notifications(models.Model):
 
-    # Informasi Karyawan --> Create , Delete , dan Update (Nama dan Jabatan only) untuk Super User
-    # Status dan Izin --> Update (Izin berlaku dan status only) untuk User 
+    # Informasi Personel --> Update (Nama, izin berlaku , dan status only) untuk User 
 
     NOTIFICATION_TYPE = (
         ('Karyawan Baru','Karyawan Baru'),
         ('Karyawan Keluar','Karyawan Keluar'),
         ('Jabatan','Jabatan'),
-        ('Status dan Izin','Status dan Izin'),
+        ('Informasi Personal','Informasi Personal'),
         ('Projek','Projek')
     )
 
@@ -98,7 +99,7 @@ class Notifications(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.notification_type
+        return self.informasi_karyawan.nama
     
 class AdminNotifications(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
