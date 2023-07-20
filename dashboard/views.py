@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.conf import settings
+from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -20,7 +21,7 @@ def main(request):
         }
     except Notifications.DoesNotExist:
         context = {
-            'detail' : "No income notification !"
+            'detail' : "Saat ini tidak ada notifikasi yang masuk"
         }
 
     if request.method == "POST":
@@ -68,7 +69,6 @@ def admin_tambah_personel(request):
         
     # Handle form tambah personel (Admin) satu - satu
     elif request.method == "POST":
-        print("salah")
         nama = request.POST.get('nama')
         jabatan = request.POST.get('jabatan')
         status_sertifikasi = request.POST.get('status_sertifikasi')
@@ -91,11 +91,19 @@ def admin_tambah_personel(request):
             izin_berlaku_attorney=izin_berlaku_attorney,
             izin_berlaku_konsultan=izin_berlaku_konsultan
         )
-
+        email = nama.replace(" ","").lower() + "@ddtc.dashboard"
+        user = CustomUser(
+            nama=nama,
+            email=email,
+            password="12345",
+            role="user"
+        )
+        
         try:
             informasi_karyawan.save()
+            user.save()
         except IntegrityError:
-            messages.error(request,"Nama karyawan sudah ada")
+            messages.error(request,"Nama karyawan atau email sudah ada")
             return redirect("dashboard:tambah-personel")
         
         users_notified = CustomUser.objects.filter(role="Super User")
@@ -273,7 +281,6 @@ def teams(request):
         messages.success(request,"Informasi personel berhasil diubah (Menunggu approval)")
         return redirect("dashboard:teams")
 
-    partner = InformasiKaryawan.objects.filter(jabatan="Partner")
     managers = InformasiKaryawan.objects.filter(
         jabatan__in=["Senior Manager", "Manager", "Assistant Manager"]
     ).order_by(
@@ -297,11 +304,51 @@ def teams(request):
 
     
     content = {
-        "partner" : partner,
         "manager" : managers,
         "specialist" : specialists,
         "admin" : admin 
     }
 
     return render(request,"base/teams.html",content)
+
+def edit_user(request):
+
+    user = request.user
+
+    if request.method == "POST" and "nama" in request.POST:
+        print("here")
+        nama = request.POST.get('nama')
+        email = request.POST.get('email')
+
+        user.nama = nama
+        user.email = email
+        user.save()
+        
+        update_session_auth_hash(request,user)
+        logout(request)
+        messages.success(request, "Nama dan email berhasil diubah")
+
+        return redirect('authentication:login-form')
+
+
+    elif request.method == "POST" and "oldpassword" in request.POST:
+        old_password = request.POST.get('oldpassword')
+        new_password = request.POST.get('newpassword')
+        if user.check_password(old_password):
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)
+            logout(request)
+            messages.success(request, "Password berhasil diubah")
+            return redirect('authentication:login-form')
+        else:
+            messages.error(request, "Password lama salah")
+            return redirect('dashboard:edit-user')
+
+    content = {
+        "nama" : request.user.nama,
+        "email" : request.user.email
+    }
+
+    return render(request,"base/edit-user.html",content)
 

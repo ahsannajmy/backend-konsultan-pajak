@@ -25,27 +25,7 @@ def login(request):
             return render(request,'login.html')
     return render(request,'login.html')
 
-def register(request):
-    if request.user.is_authenticated:
-        return redirect("dashboard:main")
-    if request.method == "POST":
-        nama = request.POST.get('nama')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
 
-        user = CustomUser(nama=nama,email=email,password=password,role="User")
-
-        try:
-            user.save()
-        except IntegrityError:
-            error_message = "Akun dengan email tersebut sudah tersedia"
-            messages.error(request,error_message)
-            return redirect('authentication:register-form')
-        
-        success_message = "Akun baru telah dibuat"
-        messages.success(request,success_message)
-        return redirect('authentication:login-form')
-    return render(request,'register.html')
 
 def logout_view(request):
     logout(request)

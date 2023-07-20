@@ -1,0 +1,106 @@
+{% extends 'base/base-dashboard.html' %}
+{% load static %}
+{% block title %} DDTC | Edit User {% endblock title %}
+{% block content %}
+<form class="p-4" method="post">
+    {% csrf_token %}
+    <h2 class="text-4xl font-bold text-darkblue-700 mb-4">Edit User</h2>
+    <div class="mb-6">
+        <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+        <input type="text" name="nama" id="nama" value="{{ nama }}"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Fill your name here" required>
+    </div>
+    <div class="mb-6">
+        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+        <input type="email" name="email" id="email" value="{{ email }}"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Fill your email here" required>
+    </div>
+    <button type="submit"
+        class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        Update
+    </button>
+</form>
+<form class="p-4" method="post">
+    {% csrf_token %}
+    <h2 class="text-4xl font-bold text-darkblue-700 mb-4 mt-4">Update Password</h2>
+    <div class="relative mb-6">
+        <label for="oldpassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Old
+            Password</label>
+        <input type="password" name="oldpassword" id="oldpassword"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 pr-10"
+            required>
+        <button type="button" class="absolute justify-center right-2 top-10"
+            onclick="togglePasswordVisibility('oldpassword')">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 20 14">
+                <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                    <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z" />
+                </g>
+            </svg>
+        </button>
+    </div>
+    <div class="relative mb-6">
+        <label for="newpassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New
+            Password</label>
+        <input type="password" name="newpassword" id="newpassword"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required>
+        <button type="button" class="absolute justify-center right-2 top-10"
+            onclick="togglePasswordVisibility('newpassword')">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 20 14">
+                <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                    <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z" />
+                </g>
+            </svg>
+        </button>
+    </div>
+    <button type="submit"
+        class="text-white bg-darkblue-700 hover:bg-darkblue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        Update
+    </button>
+</form>
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == "success" %}
+<script>
+    swal({
+        icon: '{{ message.tags }}',
+        title: 'Berhasil',
+        text: '{{ message }}',
+        customClass: {
+            content: 'swal-text'
+        }
+    });
+</script>
+{% else %}
+<script>
+    swal({
+        icon: '{{ message.tags }}',
+        title: 'Gagal',
+        text: '{{ message }}',
+    });
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+<script>
+    function togglePasswordVisibility(inputId) {
+        const input = document.getElementById(inputId);
+        const eyeIcon = document.getElementById('eye-icon');
+        if (input.type === 'password') {
+            input.type = 'text';
+        } else {
+            input.type = 'password';
+        }
+    }
+</script>
+
+
+{% endblock content %}
