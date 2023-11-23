@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'authentication',
     'dashboard',
+    'project',
 ]
 
 MIDDLEWARE = [

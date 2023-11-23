@@ -49,7 +49,7 @@ def main(request):
 
 
 
-    return render(request,"base/main.html",context)
+    return render(request,"dashboard/base/main.html",context)
 
 @login_required(login_url='authentication:login-form')
 def admin_tambah_personel(request):
@@ -119,9 +119,9 @@ def admin_tambah_personel(request):
         success_message = "Personel karyawan berhasil ditambahkan (Menunggu approval)"
         messages.success(request, success_message)
 
-        return render(request,"admin/admin-tambah-personel.html")
+        return render(request,"dashboard/admin/admin-tambah-personel.html")
 
-    return render(request,"admin/admin-tambah-personel.html")
+    return render(request,"dashboard/admin/admin-tambah-personel.html")
 
 def user_notification(request):
     notifikasi_karyawan_baru = Notifications.objects.filter(user=request.user.id,notification_type="Karyawan Baru")
@@ -171,7 +171,7 @@ def user_notification(request):
             messages.success(request, success_message)
             return redirect('dashboard:user-notification')
  
-    return render(request,"super_user/notifikasi.html",context)
+    return render(request,"dashboard/super_user/notifikasi.html",context)
     
 def admin_notifikasi(request):
     notifikasi = AdminNotifications.objects.filter(user=request.user.id)
@@ -207,7 +207,7 @@ def admin_notifikasi(request):
         messages.success(request, success_message)
         return redirect("dashboard:admin-notification")
         
-    return render(request,"admin/admin-notifikasi.html",context)
+    return render(request,"dashboard/admin/admin-notifikasi.html",context)
 
 def teams(request):
 
@@ -309,7 +309,7 @@ def teams(request):
         "admin" : admin 
     }
 
-    return render(request,"base/teams.html",content)
+    return render(request,"dashboard/base/teams.html",content)
 
 def edit_user(request):
 
@@ -350,5 +350,5 @@ def edit_user(request):
         "email" : request.user.email
     }
 
-    return render(request,"base/edit-user.html",content)
+    return render(request,"dashboard/base/edit-user.html",content)
 

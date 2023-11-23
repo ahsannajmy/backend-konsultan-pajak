@@ -172,6 +172,16 @@
           </a>
         </li>
         <li>
+          <a href="{% url 'project:projects' %}"
+            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-darkblue-700 hover:text-white dark:hover:bg-gray-700">
+            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M18 5h1v12a2 2 0 0 1-2 2m0 0a2 2 0 0 1-2-2V2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v15a2 2 0 0 0 2 2h14ZM10 4h2m-2 3h2m-8 3h8m-8 3h8m-8 3h8M4 4h3v3H4V4Z" />
+            </svg>
+            <span class="flex-1 ml-3 whitespace-nowrap">Project</span>
+          </a>
+        </li>
+        <li>
           <a href="{% url 'authentication:logout' %}"
             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-darkblue-700 hover:text-white dark:hover:bg-gray-700">
             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 15">
